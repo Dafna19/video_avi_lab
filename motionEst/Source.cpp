@@ -1,4 +1,4 @@
-#include "windows.h"
+п»ї#include "windows.h"
 #include  "vfw.h"
 #include <iostream>
 #include <fstream>
@@ -12,7 +12,7 @@ BYTE clipping(double x) {
 	return (BYTE)x;
 }
 
-//просто делает кадр в удобном triple
+//РїСЂРѕСЃС‚Рѕ РґРµР»Р°РµС‚ РєР°РґСЂ РІ СѓРґРѕР±РЅРѕРј triple
 void giveFrame(PAVISTREAM stream, RGBTRIPLE *buffer, short **triple, int size, int n, int h, int w) {
 	AVIStreamRead(stream, n, 1, buffer, size, NULL, NULL);
 	for (int i = 0; i < h; i++)
@@ -42,7 +42,7 @@ void search(short **base, short **cur, int h, int w, short **diff, int *Dx, int 
 					if (L < min) {
 						min = L;
 						dx = rx, dy = ry;
-						Dx[(w / blockSize)*(y / blockSize) + (x / blockSize)] = dx;//один вектор для всего блока
+						Dx[(w / blockSize)*(y / blockSize) + (x / blockSize)] = dx;//РѕРґРёРЅ РІРµРєС‚РѕСЂ РґР»СЏ РІСЃРµРіРѕ Р±Р»РѕРєР°
 						Dy[(w / blockSize)*(y / blockSize) + (x / blockSize)] = dy;
 						
 					}
@@ -97,9 +97,9 @@ void main(int argc, char* argv[]) {
 		triple2[i] = new short[bmpInfo.biWidth];
 		diff[i] = new short[bmpInfo.biWidth];
 	}
-	dx = new int[(w / blockSize)*(h / blockSize)];//столько блоков
+	dx = new int[(w / blockSize)*(h / blockSize)];//СЃС‚РѕР»СЊРєРѕ Р±Р»РѕРєРѕРІ
 	dy = new int[(w / blockSize)*(h / blockSize)];
-	double *pdx = new double[2 * R + 1];//а столько возможных значений
+	double *pdx = new double[2 * R + 1];//Р° СЃС‚РѕР»СЊРєРѕ РІРѕР·РјРѕР¶РЅС‹С… Р·РЅР°С‡РµРЅРёР№
 	double *pdy = new double[2 * R + 1];
 	double blockCount = (w / blockSize)*(h / blockSize);
 
@@ -114,7 +114,7 @@ void main(int argc, char* argv[]) {
 	for (int n = 1; n < aviInfo.dwLength; n++) {
 		giveFrame(stream, buffer, triple2, bmpInfo.biSizeImage, n, bmpInfo.biHeight, bmpInfo.biWidth);
 
-		for (int i = 0; i < h; i++) //интерполяция
+		for (int i = 0; i < h; i++) //РёРЅС‚РµСЂРїРѕР»СЏС†РёСЏ
 			for (int j = 0; j < w; j++)
 				triple[i][j] = (triple[i][j] + triple2[i][j]) / 2;
 

@@ -1,12 +1,12 @@
-#include "windows.h"
+п»ї#include "windows.h"
 #include  "vfw.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
 
-/* перемешивание кадров из двух видео в одно.
-кадр номер i - из первого видео если i mod N = 0,
-иначе это кадр из второго
+/* РїРµСЂРµРјРµС€РёРІР°РЅРёРµ РєР°РґСЂРѕРІ РёР· РґРІСѓС… РІРёРґРµРѕ РІ РѕРґРЅРѕ.
+РєР°РґСЂ РЅРѕРјРµСЂ i - РёР· РїРµСЂРІРѕРіРѕ РІРёРґРµРѕ РµСЃР»Рё i mod N = 0,
+РёРЅР°С‡Рµ СЌС‚Рѕ РєР°РґСЂ РёР· РІС‚РѕСЂРѕРіРѕ
 */
 void module(char *name1, char *name2, char *name3) {
 	PAVIFILE file, file2, file3;
@@ -33,7 +33,7 @@ void module(char *name1, char *name2, char *name3) {
 		if (k%N != 0) i++;
 		else j++;
 	}
-	aviInfo3.dwLength = k; //кол-во кадров
+	aviInfo3.dwLength = k; //РєРѕР»-РІРѕ РєР°РґСЂРѕРІ
 	AVIFileCreateStream(file3, &stream3, &aviInfo3); // new video stream	
 
 	AVIStreamReadFormat(stream, 0, &bmpInfo, &bmpInfoSize);
@@ -42,23 +42,23 @@ void module(char *name1, char *name2, char *name3) {
 	buffer = malloc(bmpInfo.biSizeImage);
 
 	for (i = 0, j = 0, k = 0; k < aviInfo3.dwLength; k++) {
-		if (k%N != 0) { // кадр из 1го
+		if (k%N != 0) { // РєР°РґСЂ РёР· 1РіРѕ
 			AVIStreamRead(stream, i, 1, buffer, bmpInfo.biSizeImage, NULL, NULL);
 			i++;
 		}
-		else {//кадр из 2го видео
+		else {//РєР°РґСЂ РёР· 2РіРѕ РІРёРґРµРѕ
 			AVIStreamRead(stream2, j, 1, buffer, bmpInfo.biSizeImage, NULL, NULL);
 			j++;
 		}
 		AVIStreamWrite(stream3, k, 1, buffer, bmpInfo.biSizeImage, AVIIF_KEYFRAME, NULL, NULL);
 	}/*
-	 if (k < aviInfo3.dwLength && i == aviInfo.dwLength) { //закончилось 1е видео
+	 if (k < aviInfo3.dwLength && i == aviInfo.dwLength) { //Р·Р°РєРѕРЅС‡РёР»РѕСЃСЊ 1Рµ РІРёРґРµРѕ
 	 for (; k < aviInfo3.dwLength; k++, j++) {
 	 AVIStreamRead(stream2, j, 1, buffer, bmpInfo.biSizeImage, NULL, NULL);
 	 AVIStreamWrite(stream3, k, 1, buffer, bmpInfo.biSizeImage, AVIIF_KEYFRAME, NULL, NULL);
 	 }
 	 }
-	 else if (k < aviInfo3.dwLength && j == aviInfo2.dwLength) { //закончилось 2е видео
+	 else if (k < aviInfo3.dwLength && j == aviInfo2.dwLength) { //Р·Р°РєРѕРЅС‡РёР»РѕСЃСЊ 2Рµ РІРёРґРµРѕ
 	 for (; k < aviInfo3.dwLength; k++, i++) {
 	 AVIStreamRead(stream, i, 1, buffer, bmpInfo.biSizeImage, NULL, NULL);
 	 AVIStreamWrite(stream3, k, 1, buffer, bmpInfo.biSizeImage, AVIIF_KEYFRAME, NULL, NULL);
@@ -145,7 +145,7 @@ void correlation(char *video, char *outFile) {
 		long b;
 		AVIStreamRead(stream, i, 1, buffer, size, &b, NULL);
 		AVIStreamRead(stream, i+1, 1, buffer2, size, &b, NULL);
-		//мат.ожидание
+		//РјР°С‚.РѕР¶РёРґР°РЅРёРµ
 		double matA=0, matB=0, mat=0, corr = 0;
 		
 		for (int j = 0; j < size; j++) {
@@ -154,7 +154,7 @@ void correlation(char *video, char *outFile) {
 		}
 		matA = matA / size;
 		matB = matB / size;
-		//среднекв.отклонение
+		//СЃСЂРµРґРЅРµРєРІ.РѕС‚РєР»РѕРЅРµРЅРёРµ
 		double sigma = 0, sigma2 = 0;
 		for (int j = 0; j < size; j++) {
 			sigma += ((double)buffer[j].rgbtGreen - matA)*((double)buffer[j].rgbtGreen - matA);
